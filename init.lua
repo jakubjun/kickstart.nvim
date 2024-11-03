@@ -979,8 +979,13 @@ require('lazy').setup({
 -- vim: ts=2 sts=2 sw=2 et
 
 vim.keymap.set({ 'n', 'i' }, '<c-s>', '<cmd>w<CR>')
-vim.keymap.set('n', '<leader>qq', '<cmd>qa<CR>')
+vim.keymap.set('n', '<leader>q', '<cmd>qa<CR>')
+vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>')
 vim.cmd [[
   set wrap
   set linebreak
 ]]
+
+vim.opt.expandtab = true
+vim.opt.tabstop = 2
+vim.opt.confirm = true
