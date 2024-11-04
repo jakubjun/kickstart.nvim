@@ -585,6 +585,8 @@ require('lazy').setup({
             })
           end
 
+          -- client.server_capabilities.document_formatting = true
+
           -- The following code creates a keymap to toggle inlay hints in your
           -- code, if the language server you are using supports them
           --
@@ -721,7 +723,10 @@ require('lazy').setup({
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+        typescript = { 'prettierd', 'prettier', stop_after_first = true },
+        typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },
@@ -979,7 +984,7 @@ require('lazy').setup({
 -- vim: ts=2 sts=2 sw=2 et
 
 vim.keymap.set({ 'n', 'i' }, '<c-s>', '<cmd>w<CR>')
-vim.keymap.set('n', '<leader>q', '<cmd>qa<CR>')
+vim.keymap.set('n', '<leader>qq', '<cmd>qa<CR>')
 vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>')
 vim.cmd [[
   set wrap

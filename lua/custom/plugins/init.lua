@@ -44,14 +44,18 @@ return {
     'ibhagwan/fzf-lua',
     -- optional for icon support
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    opts = {
-      files = {
-        path_shorten = 1,
-      },
-    },
     config = function()
       -- calling `setup` is optional for customization
-      require('fzf-lua').setup {}
+      require('fzf-lua').setup {
+        fzf_opts = { ['--cycle'] = '' },
+        -- files = {
+        --   path_shorten = 1,
+        -- },
+        lsp = {
+          jump_to_single_result = true,
+          jump_to_single_result_action = require('fzf-lua').actions.file_edit,
+        },
+      }
 
       local builtin = require 'fzf-lua'
       builtin.register_ui_select()
@@ -60,7 +64,9 @@ return {
       vim.keymap.set('n', '<leader>sf', builtin.files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_cWORD, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+      vim.keymap.set('n', '<leader>/', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+      vim.keymap.set('n', '<leader>sg', builtin.git_status, { desc = '[S]earch by [G]it' })
+      vim.keymap.set('n', '<leader>sr', builtin.lsp_references, { desc = '[S]earch references' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics_document, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
@@ -79,8 +85,33 @@ return {
     ---@type AutoSession.Config
     opts = {
       suppressed_dirs = { '~/', '~/Projects', '~/Downloads', '/' },
-      -- log_level = 'debug',
+      -- og_level = 'debug',
     },
+  },
+  {
+    'mfussenegger/nvim-dap',
+    keys = function(_, keys)
+      local dap = require 'dap'
+      -- local dapui = require 'dapui'
+      return {
+        -- Basic debugging keymaps, feel free to change to your liking!
+        { '<leader>dc', dap.continue, desc = 'Debug: Start/Continue' },
+        { '<leader>di', dap.step_into, desc = 'Debug: Step Into' },
+        { '<leader>do', dap.step_over, desc = 'Debug: Step Over' },
+        { '<leader>dO', dap.step_out, desc = 'Debug: Step Out' },
+        { '<leader>db', dap.toggle_breakpoint, desc = 'Debug: Toggle Breakpoint' },
+        {
+          '<leader>B',
+          function()
+            dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
+          end,
+          desc = 'Debug: Set Breakpoint',
+        },
+        -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
+        -- { '', dapui.toggle, desc = 'Debug: See last session result.' },
+        unpack(keys),
+      }
+    end,
   },
   {
     'jay-babu/mason-nvim-dap.nvim',
@@ -147,6 +178,20 @@ return {
     'numToStr/Comment.nvim',
     opts = {
       -- add any options here
+    },
+  },
+  {
+    'mistricky/codesnap.nvim',
+    build = 'make build_generator',
+    keys = {
+      { '<leader>cc', '<cmd>CodeSnap<cr>', mode = 'x', desc = 'Save selected code snapshot into clipboard' },
+      { '<leader>cs', '<cmd>CodeSnapSave<cr>', mode = 'x', desc = 'Save selected code snapshot in ~/Pictures' },
+    },
+    opts = {
+      save_path = '~/Pictures',
+      has_breadcrumbs = true,
+      bg_theme = 'dusk',
+      watermark = '',
     },
   },
 }
