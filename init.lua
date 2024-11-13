@@ -994,3 +994,6 @@ vim.cmd [[
 vim.opt.expandtab = true
 vim.opt.tabstop = 2
 vim.opt.confirm = true
+-- vim.g.editorconfig = false
+vim.opt.smartindent = false
+vim.diagnostic.config { virtual_text = true }

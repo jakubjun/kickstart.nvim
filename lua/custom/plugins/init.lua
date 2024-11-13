@@ -7,7 +7,14 @@ return {
     'stevearc/oil.nvim',
     ---@module 'oil'
     ---@type oil.SetupOpts
-    opts = {},
+    opts = {
+      keymaps = {
+        ['<C-v>'] = { 'actions.select', opts = { vertical = true }, desc = 'Open the entry in a vertical split' },
+        ['<C-s>'] = false,
+        ['<C-l>'] = false,
+        ['<C-r>'] = 'actions.refresh',
+      },
+    },
     -- Optional dependencies
     dependencies = { { 'echasnovski/mini.icons', opts = {} } },
     -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
@@ -99,6 +106,7 @@ return {
         { '<leader>di', dap.step_into, desc = 'Debug: Step Into' },
         { '<leader>do', dap.step_over, desc = 'Debug: Step Over' },
         { '<leader>dO', dap.step_out, desc = 'Debug: Step Out' },
+        { '<leader>dt', dap.terminate, desc = 'Debug: Terminate' },
         { '<leader>db', dap.toggle_breakpoint, desc = 'Debug: Toggle Breakpoint' },
         {
           '<leader>B',
@@ -111,6 +119,14 @@ return {
         -- { '', dapui.toggle, desc = 'Debug: See last session result.' },
         unpack(keys),
       }
+    end,
+  },
+  {
+    'rcarriga/nvim-dap-ui',
+    dependencies = { 'mfussenegger/nvim-dap', 'nvim-neotest/nvim-nio' },
+    config = function()
+      require('dapui').setup()
+      vim.keymap.set('n', '<leader>de', require('dapui').eval, { desc = 'Debug: Eval' })
     end,
   },
   {
@@ -193,5 +209,10 @@ return {
       bg_theme = 'dusk',
       watermark = '',
     },
+  },
+  {
+    'mrcjkb/rustaceanvim',
+    version = '^5', -- Recommended
+    lazy = false, -- This plugin is already lazy
   },
 }
