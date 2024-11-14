@@ -983,7 +983,7 @@ require('lazy').setup({
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
-vim.keymap.set({ 'n', 'i' }, '<c-s>', '<cmd>w<CR>')
+vim.keymap.set('n', '<leader>w', '<cmd>w<CR>')
 vim.keymap.set('n', '<leader>qq', '<cmd>qa<CR>')
 vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>')
 vim.cmd [[
