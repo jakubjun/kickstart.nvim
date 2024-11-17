@@ -22,13 +22,13 @@ return {
       { '<leader>e', '<cmd>Oil<cr>', desc = 'oil' },
     },
   },
-  {
-    'tpope/vim-fugitive',
-    keys = {
-      { '<leader>gg', '<cmd>Git<cr>', desc = 'git status' },
-      { '<leader>gb', '<cmd>Git blame<cr>', desc = 'git blame' },
-    },
-  },
+  -- {
+  --   'tpope/vim-fugitive',
+  --   keys = {
+  --     { '<leader>gg', '<cmd>Git<cr>', desc = 'git status' },
+  --     { '<leader>gb', '<cmd>Git blame<cr>', desc = 'git blame' },
+  --   },
+  -- },
   'tpope/vim-surround',
   'tpope/vim-unimpaired',
   {
@@ -192,8 +192,11 @@ return {
   },
   {
     'numToStr/Comment.nvim',
+    -- dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring' },
     opts = {
-      -- add any options here
+      --  pre_hook = function()
+      --    return require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook()
+      --  end,
     },
   },
   {
@@ -214,5 +217,71 @@ return {
     'mrcjkb/rustaceanvim',
     version = '^5', -- Recommended
     lazy = false, -- This plugin is already lazy
+  },
+  {
+    'ThePrimeagen/harpoon',
+    branch = 'harpoon2',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = {
+      settings = {
+        save_on_toggle = true,
+      },
+    },
+    keys = function()
+      local keys = {
+        {
+          '<leader>H',
+          function()
+            require('harpoon'):list():add()
+          end,
+          desc = 'Harpoon File',
+        },
+        {
+          '<leader>hh',
+          function()
+            local harpoon = require 'harpoon'
+            harpoon.ui:toggle_quick_menu(harpoon:list())
+          end,
+          desc = 'Harpoon Quick Menu',
+        },
+      }
+
+      for i = 1, 5 do
+        table.insert(keys, {
+          '<leader>' .. i,
+          function()
+            require('harpoon'):list():select(i)
+          end,
+          desc = 'Harpoon to File ' .. i,
+        })
+      end
+      return keys
+    end,
+  },
+  {
+    'folke/flash.nvim',
+    event = 'VeryLazy',
+    ---@type Flash.Config
+    opts = {},
+    -- stylua: ignore
+    keys = {
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+    },
+  },
+  { 'dmmulroy/ts-error-translator.nvim' },
+  'sindrets/diffview.nvim',
+  'rhysd/git-messenger.vim',
+  {
+    'NeogitOrg/neogit',
+    dependencies = {
+      'nvim-lua/plenary.nvim', -- required
+      'sindrets/diffview.nvim', -- optional - Diff integration
+      'ibhagwan/fzf-lua', -- optional
+    },
+    config = true,
   },
 }

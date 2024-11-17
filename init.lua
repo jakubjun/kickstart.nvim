@@ -852,17 +852,20 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'sainnhe/sonokai',
+    'scottmckendry/cyberdream.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
+    -- opts = {
+    --   transparent = true,
+    -- },
     init = function()
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.g.sonokai_style = 'espresso'
-      vim.cmd.colorscheme 'sonokai'
+      -- vim.g.sonokai_style = 'espresso'
+      vim.cmd.colorscheme 'cyberdream'
 
       -- You can configure highlights by doing something like:
-      vim.cmd.hi 'Comment gui=none'
+      -- vim.cmd.hi 'Comment gui=none'
     end,
   },
 
@@ -983,7 +986,7 @@ require('lazy').setup({
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
-vim.keymap.set('n', '<leader>w', '<cmd>w<CR>')
+vim.keymap.set({ 'n', 'i' }, '<c-s>', '<cmd>w<CR>')
 vim.keymap.set('n', '<leader>qq', '<cmd>qa<CR>')
 vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>')
 vim.cmd [[
