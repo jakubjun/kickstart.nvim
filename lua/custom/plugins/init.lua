@@ -194,9 +194,7 @@ return {
     'numToStr/Comment.nvim',
     -- dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring' },
     opts = {
-      --  pre_hook = function()
-      --    return require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook()
-      --  end,
+      pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
     },
   },
   {
@@ -272,7 +270,14 @@ return {
       { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   },
-  { 'dmmulroy/ts-error-translator.nvim' },
+  {
+    'dmmulroy/ts-error-translator.nvim',
+    config = function()
+      require('ts-error-translator').setup {
+        auto_override_publish_diagnostics = true,
+      }
+    end,
+  },
   'sindrets/diffview.nvim',
   'rhysd/git-messenger.vim',
   {
@@ -283,5 +288,52 @@ return {
       'ibhagwan/fzf-lua', -- optional
     },
     config = true,
+  },
+  {
+    'kevinhwang91/nvim-ufo',
+    dependencies = 'kevinhwang91/promise-async',
+    config = function()
+      -- vim.o.foldcolumn = '1' -- '0' is not bad
+      vim.o.foldcolumn = '1'
+      vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+      vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+      vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
+      vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities.textDocument.foldingRange = {
+        dynamicRegistration = false,
+        lineFoldingOnly = true,
+      }
+      local language_servers = require('lspconfig').util.available_servers() -- or list servers manually like {'gopls', 'clangd'}
+      for _, ls in ipairs(language_servers) do
+        require('lspconfig')[ls].setup {
+          capabilities = capabilities,
+          -- you can add other fields for setting up lsp server in this table
+        }
+      end
+      require('ufo').setup()
+    end,
+  },
+  {
+    'luukvbaal/statuscol.nvim',
+    opts = function()
+      local builtin = require 'statuscol.builtin'
+      return {
+        setopt = true,
+        -- override the default list of segments with:
+        -- number-less fold indicator, then signs, then line number & separator
+        segments = {
+          { text = { builtin.foldfunc }, click = 'v:lua.ScFa' },
+          { text = { '%s' }, click = 'v:lua.ScSa' },
+          {
+            text = { builtin.lnumfunc, ' ' },
+            condition = { true, builtin.not_empty },
+            click = 'v:lua.ScLa',
+          },
+        },
+      }
+    end,
   },
 }
