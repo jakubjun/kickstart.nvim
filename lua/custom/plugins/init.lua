@@ -192,10 +192,12 @@ return {
   },
   {
     'numToStr/Comment.nvim',
-    -- dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring' },
-    opts = {
-      pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
-    },
+    dependencies = { { 'JoosepAlviste/nvim-ts-context-commentstring', opts = { enable_autocmd = false } } },
+    opts = function()
+      return {
+        pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+      }
+    end,
   },
   {
     'mistricky/codesnap.nvim',
@@ -288,6 +290,10 @@ return {
       'ibhagwan/fzf-lua', -- optional
     },
     config = true,
+    keys = {
+
+      { '<leader>gg', '<cmd>Neogit<cr>', desc = 'Neogit' },
+    },
   },
   {
     'kevinhwang91/nvim-ufo',
@@ -335,5 +341,12 @@ return {
         },
       }
     end,
+  },
+  {
+    'stevearc/dressing.nvim',
+    opts = {},
+  },
+  {
+    'Bekaboo/dropbar.nvim',
   },
 }
