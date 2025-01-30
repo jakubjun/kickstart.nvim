@@ -847,11 +847,14 @@ require('lazy').setup({
     end,
   },
   {
-    'Mofiqul/dracula.nvim',
+    'folke/tokyonight.nvim',
     lazy = false,
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'dracula'
+    opts = {
+      -- custom options here
+    },
+    config = function(_, opts)
+      -- require('tokyodark').setup(opts) -- calling setup is optional
+      vim.cmd [[colorscheme tokyonight]]
     end,
   },
   -- { -- You can easily change to a different colorscheme.
@@ -882,7 +885,7 @@ require('lazy').setup({
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {
-      theme = 'dracula-nvim',
+      -- theme = 'vscode',
     },
   },
 
@@ -959,7 +962,7 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   -- require 'kickstart.plugins.debug',
-  require 'kickstart.plugins.indent_line',
+  -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
@@ -1003,6 +1006,13 @@ require('lazy').setup({
 vim.keymap.set({ 'n', 'i' }, '<c-s>', '<cmd>w<CR>')
 vim.keymap.set('n', '<leader>qq', '<cmd>qa<CR>')
 vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>')
+
+vim.keymap.set('n', '<leader><tab>n', '<cmd>tabn<CR>')
+vim.keymap.set('n', '<leader><tab>p', '<cmd>tabp<CR>')
+vim.keymap.set('n', '<leader><tab>d', '<cmd>tabc<CR>')
+vim.keymap.set('n', '<leader><tab><tab>', '<cmd>tabnew<CR>')
+-- vim.keymap.set('n', '<s-left>', '<cmd>bp<cr>')
+-- vim.keymap.set('n', '<s-right>', '<cmd>bn<cr>')
 vim.cmd [[
   set wrap
   set linebreak
@@ -1014,3 +1024,4 @@ vim.opt.confirm = true
 -- vim.g.editorconfig = false
 vim.opt.smartindent = false
 -- vim.diagnostic.config { virtual_text = false }
+vim.o.sessionoptions = vim.o.sessionoptions .. ',globals'

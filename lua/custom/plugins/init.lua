@@ -349,4 +349,31 @@ return {
   {
     'Bekaboo/dropbar.nvim',
   },
+  {
+    'akinsho/bufferline.nvim',
+    version = '*',
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    opts = {},
+    config = function()
+      vim.keymap.set('n', '<leader>bp', '<cmd>BufferLineTogglePin<cr>', { desc = 'toggle pin' })
+      vim.keymap.set('n', '<s-left>', '<cmd>BufferLineCyclePrev<cr>')
+      vim.keymap.set('n', '<s-right>', '<cmd>BufferLineCycleNext<cr>')
+      vim.keymap.set('n', '<leader>bo', '<cmd>BufferLineCloseOthers<cr>', { desc = 'close others' })
+      vim.keymap.set('n', '<leader>bP', '<cmd>BufferLineGroupClose ungrouped<cr>', { desc = 'close unpinned' })
+      require('bufferline').setup {}
+    end,
+  },
+  { 'wakatime/vim-wakatime', lazy = false },
+  {
+    'pwntester/octo.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+      -- OR 'ibhagwan/fzf-lua',
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = function()
+      require('octo').setup()
+    end,
+  },
 }
